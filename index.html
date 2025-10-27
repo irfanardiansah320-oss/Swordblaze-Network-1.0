@@ -1,0 +1,673 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Swordblaze Network</title>
+<link rel="icon" href="p2.png" type="image/png">
+
+  <style>
+    /* ------------------------------
+       BAGIAN: VARIABEL & GAYA DASAR
+    ------------------------------ */
+    :root{
+      --bg:#0f1724;        /* warna background utama halaman */
+      --card:#0b1220;      /* warna kartu utama (tempat isi konten) */
+      --text:#e6eef8;      /* warna teks utama */
+      --muted:#ffffff;     /* warna teks tambahan / subtitle */
+      --accent:#6366f1;    /* warna tombol utama */
+      --radius:16px;       /* besar lengkungan sudut elemen */
+      --maxw:420px;        /* lebar maksimum kartu */
+      --gap:12px;          /* jarak antar tombol/link */
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
+    *{box-sizing:border-box} /* agar padding & border tidak nambah ukuran total elemen */
+
+    html,body{height:100%}
+
+    body{
+  margin:0;
+  background:
+    url("bg1.png") no-repeat center center fixed;
+  background-size: cover;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:32px;
+  color:var(--text);
+}
+
+    /* pembungkus utama agar konten tidak terlalu lebar */
+    .wrap{width:100%;max-width:var(--maxw);}
+
+    /* ------------------------------
+       KARTU UTAMA (CARD)
+    ------------------------------ */
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      padding:28px;
+      border-radius:var(--radius);
+      box-shadow:0 6px 24px rgba(2,6,23,0.6); /* bayangan lembut */
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:16px; /* jarak antar elemen di dalam card */
+    }
+
+    /* ------------------------------
+       FOTO PROFIL (AVATAR)
+    ------------------------------ */
+    .avatar{
+      width:96px;
+      height:96px;
+      border-radius:999px; /* jadi bulat */
+      overflow:hidden; /* agar gambar yang keluar area dibatasi */
+      border:3px solid rgba(255,255,255,0.06); /* garis halus di sekeliling */
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    }
+
+    /* gambar di dalam avatar biar selalu penuh & rapi */
+    .avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+  transition: all 0.5s ease; /* biar gerakannya halus */
+}
+
+.avatar:hover img{
+  transform: scale(1.15) rotate(5deg); /* membesar dan miring sedikit */
+  box-shadow: 0 0 25px rgba(99,102,241,0.6); /* efek glow biru */
+  cursor: pointer;
+}
+    /* ------------------------------
+       TEKS & SUBTITLE
+    ------------------------------ */
+    h1{
+      margin:0;
+      font-size:20px;
+    }
+
+    p.subtitle{
+      margin:0;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    /* ------------------------------
+       TOMBOL / LINK
+    ------------------------------ */
+    .links{
+      width:100%;
+      display:flex;
+      flex-direction:column;
+      gap:var(--gap); /* jarak antar tombol */
+      margin-top:6px;
+    }
+
+    /* gaya umum tombol */
+    .btn {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: linear-gradient(180deg, var(--accent), #4f46e5);
+  color: white;
+  font-weight: 600;
+  box-shadow: 0 6px 14px rgba(99,102,241,0.18);
+  transition: all 0.3s ease; /* biar efek lebih halus */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.btn:hover {
+  transform: scale(1.05); /* sedikit membesar */
+  box-shadow: 0 0 18px rgba(99,102,241,0.5); /* efek glow */
+  background: linear-gradient(180deg, #818cf8, #4f46e5); /* gradasi lebih terang */
+}
+
+    /* tombol versi sekunder (biasanya buat download) */
+    .btn.secondary{
+      background:transparent;
+      color:var(--text);
+      border:1px solid rgba(255,255,255,0.05);
+      box-shadow:none;
+    }
+
+    /* efek saat tombol ditekan */
+    .btn:active{
+      transform:translateY(1px);
+    }
+
+    .btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(99,102,241,0.5);
+  transition: all 0.25s ease;
+}
+.btn.secondary:hover {
+  background: rgba(255,255,255,0.05);
+  box-shadow: 0 0 16px rgba(255,255,255,0.1);
+}
+
+.btn:active {
+  transform: scale(0.95);
+  box-shadow: 0 0 5px rgba(99,102,241,0.3);
+}
+
+.btn, .subtitle {
+  transition: color 0.3s ease, background 0.3s ease;
+}
+
+
+
+    /* ------------------------------
+       TEKS KECIL DI BAWAH
+    ------------------------------ */
+    .small{
+      font-size:13px;
+      color:var(--muted);
+      margin-top:8px;
+    }
+
+    /* ------------------------------
+       EFEK HOVER PADA CARD
+    ------------------------------ */
+    .card:hover{
+      transform:scale(1.01); /* agak membesar sedikit */
+      transition:transform .18s cubic-bezier(.2,.9,.3,1);
+    }
+
+    /* ------------------------------
+       RESPONSIVE (untuk HP)
+    ------------------------------ */
+    @media (max-width:420px){
+      :root{--maxw:360px}
+    }
+
+  
+.avatar:hover {
+  transform: rotate(5deg) scale(1.1);
+  transition: transform 0.7s ease;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+}
+
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(99,102,241,0.2), transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(236,72,153,0.15), transparent 40%),
+    url("bg1.png") no-repeat center center fixed;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  color: var(--text);
+  animation: moveGlow 10s ease-in-out infinite alternate;
+}
+
+@keyframes moveGlow {
+  0% { background-position: 20% 20%, 80% 80%; }
+  100% { background-position: 30% 25%, 70% 75%; }
+}
+
+
+h1 {
+  margin: 0;
+  font-size: 22px;
+  background: linear-gradient(90deg, #fcfcfc, #ffe8e8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@keyframes floaty {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+  100% { transform: translateY(0px); }
+}
+.card {
+  animation: fadeInUp 0.8s ease forwards, floaty 6s ease-in-out infinite;
+}
+
+
+.avatar {
+  position: relative;
+  box-shadow: 0 0 20px rgba(99,102,241,0.2);
+}
+.avatar::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  box-shadow: 0 0 20px rgba(99,102,241,0.4);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.avatar:hover::after {
+  opacity: 1;
+}
+
+
+/* === ANIMASI MASUK (pas pertama kali load) ===
+   Letakkan blok ini di akhir <style> supaya prioritasnya benar.
+*/
+
+/* hentikan animasi lama pada body jika ada (hindari konflik) */
+body { animation-name: none !important; }
+
+/* Container utama (fade + slide up) */
+.wrap {
+  opacity: 0;
+  transform: translateY(18px);
+  animation: pageFadeIn 700ms ease-out forwards; /* durasi 0.7s */
+}
+
+/* Card muncul sedikit terlambat setelah container */
+.card {
+  opacity: 0;
+  transform: translateY(12px) scale(0.995);
+  animation: cardFadeIn 700ms ease-out forwards;
+  animation-delay: 220ms; /* mulai setelah wrap */
+}
+
+/* Avatar (zoom + fade) */
+.avatar {
+  opacity: 0;
+  transform: scale(0.85);
+  animation: avatarZoom 560ms cubic-bezier(.2,.9,.25,1) forwards;
+  animation-delay: 420ms;
+}
+
+/* Nama & subtitle */
+#site-title, .subtitle {
+  opacity: 0;
+  transform: translateY(8px);
+  animation: textFadeIn 520ms ease forwards;
+}
+#site-title { animation-delay: 620ms; }
+.subtitle    { animation-delay: 760ms; }
+
+/* Tombol muncul berurutan (stagger) */
+.links .btn {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: btnFadeIn 420ms ease forwards;
+}
+/* atur delay per tombol (1..6) — sesuaikan jumlah tombol di HTML */
+.links .btn:nth-child(1){ animation-delay: 920ms; }
+.links .btn:nth-child(2){ animation-delay: 1060ms; }
+.links .btn:nth-child(3){ animation-delay: 1200ms; }
+.links .btn:nth-child(4){ animation-delay: 1340ms; }
+.links .btn:nth-child(5){ animation-delay: 1480ms; }
+.links .btn:nth-child(6){ animation-delay: 1620ms; }
+.links .btn:nth-child(7){ animation-delay: 1760ms; }
+
+/* teks kecil bawah */
+.small {
+  opacity: 0;
+  transform: translateY(6px);
+  animation: textFadeIn 520ms ease forwards;
+  animation-delay: 1640ms;
+}
+
+/* KEYFRAMES */
+@keyframes pageFadeIn {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes cardFadeIn {
+  from { opacity: 0; transform: translateY(12px) scale(0.995); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes avatarZoom {
+  from { opacity: 0; transform: scale(0.85); }
+  60%  { transform: scale(1.03); opacity: 1; }
+  to   { transform: scale(1); opacity: 1; }
+}
+@keyframes textFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes btnFadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* optional: kalau mau non-animasi di prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .wrap, .card, .avatar, #site-title, .subtitle, .links .btn, .small {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+/* Efek membesar saat hover tombol/link */
+
+.btn {
+  transition: transform 1s linear, box-shadow 1s linear;
+  will-change: transform;
+}
+
+.btn:hover {
+  transform: scale(1.1) !important;
+  box-shadow: 0 0 18px rgba(99, 102, 241, 0.6);
+  z-index: 10;
+}
+
+.btn-icon {
+  width: 20px;       /* ukuran icon */
+  height: 20px;
+  margin-right: 8px; /* jarak icon ke teks */
+  vertical-align: middle;
+}
+
+.btn {
+  display: inline-flex;         /* biar logo + teks sejajar */
+  align-items: left;          /* vertikal tengah */
+  gap: 8px;                     /* jarak logo ke teks */
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: linear-gradient(180deg, var(--accent), #4f46e5);
+  color: white;
+  font-weight: 600;
+  text-decoration: none;
+   transition: transform 2s ease, box-shadow 2s ease; /* durasi lebih lama */
+}
+
+.btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.4);
+}
+
+.btn img {
+  width: 20px;   /* ukuran logo */
+  height: 20px;
+}
+
+
+/* Animasi bounce ikon saat hover tombol */
+.btn img {
+  width: 20px;
+  height: 20px;
+  transition: transform 1s ease; /* transisi halus */
+}
+
+.btn:hover img {
+  animation: iconBounce 1.5s ease forwards;
+}
+
+@keyframes iconBounce {
+  0%   { transform: translateY(0); }
+  25%  { transform: translateY(-4px); }
+  50%  { transform: translateY(0); }
+  75%  { transform: translateY(-2px); }
+  100% { transform: translateY(0); }
+}
+
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: linear-gradient(180deg, var(--accent), #4f46e5);
+  color: white;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.6s ease-out, box-shadow 0.6s ease-out, background 0.6s ease-out;
+}
+
+.btn:hover {
+  transform: scale(1.1); /* membesar perlahan */
+  box-shadow: 0 0 20px rgba(99,102,241,0.6); /* glow perlahan */
+  background: linear-gradient(180deg, #818cf8, #4f46e5); /* gradasi lebih terang */
+}
+
+
+.btn {
+  position: relative; /* penting agar tooltip bisa absolute ke tombol */
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: linear-gradient(180deg, var(--accent), #4f46e5);
+  color: white;
+  font-weight: 600;
+  text-decoration: none;
+  overflow: visible; /* pastikan tooltip tidak terpotong */
+}
+
+/* Tooltip */
+.tooltip {
+  position: absolute;
+  bottom: 120%; /* muncul di atas tombol */
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.8);
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 20;
+}
+
+/* Muncul saat hover */
+.btn:hover .tooltip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-5px);
+}
+
+p.subtitle {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.5); /* horizontal, vertical, blur, warna */
+}
+
+
+text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+
+#site-title {
+  margin: 0;
+  font-size: 22px;
+  background: linear-gradient(90deg, #000000, #ffe8e8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 2px 2px 6px rgba(0,0,0,0.6); /* bayangan tebal */
+}
+
+.subtitle:hover {
+  text-shadow: 0 0 6px #fff, 0 0 12px #6366f1;
+  transform: translateY(-2px);
+  transition: 0.3s ease;
+}
+
+.subtitle:hover {
+  text-shadow: 0 0 6px #fff, 0 0 12px #6366f1;
+  transform: translateY(-2px);
+  transition: 0.3s ease;
+}
+
+.btn:hover .tooltip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-10px) scale(1.05);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+
+.card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 12px 30px rgba(99,102,241,0.4);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+#site-title {
+  margin: 0;
+  font-size: 22px;
+  background: linear-gradient(90deg, #fcfcfc, #ffe8e8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 2px 2px 6px rgba(255, 254, 254, 0.5); /* bayangan awal */
+  transition: all 0.3s ease;
+  cursor: default;
+}
+
+#site-title:hover {
+  text-shadow: 0 0 12px #fff, 0 0 20px #6366f1; /* efek glow */
+  transform: translateY(-3px); /* naik sedikit */
+}
+
+
+.card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 30px rgba(99,102,241,0.7);
+  transition: all 0.25s ease;
+}
+
+
+/* Efek klik untuk tombol sosial media */
+.btn:active {
+  transform: scale(0.95) translateY(2px); /* sedikit mengecil dan turun */
+  box-shadow: 0 0 12px rgba(99,102,241,0.6); /* glow singkat */
+  background: linear-gradient(180deg, #4f46e5, #6366f1); /* gradasi berubah sebentar */
+  transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.1s ease;
+}
+
+/* Opsional: efek pantulan cepat */
+@keyframes btnBounce {
+  0% { transform: scale(0.95); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+/* Kalau mau, saat diklik bisa pakai JS: men-trigger animasi pantul */
+
+@keyframes iconBounce {
+  0%   { transform: scale(1) translateY(0); }
+  25%  { transform: scale(1.4) translateY(-4px); } /* lebih besar */
+  50%  { transform: scale(1.3) translateY(0); }
+  75%  { transform: scale(3) translateY(-2px); }
+  100% { transform: scale(2.7) translateX(-4px)translatey(-1px); }
+}
+
+.next-btn {
+  text-align: center;
+  margin-top: 25px;
+  width: 100%;
+  display: block;
+  clear: both;
+}
+
+.next-btn a {
+  display: inline-block;
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 25px;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.next-btn a:hover {
+  background-color: #45a049;
+  transform: scale(1.05);
+}
+
+.small a:hover {
+  color: #fff;
+  text-shadow: 0 0 6px #fff, 0 0 12px #6366f1;
+  transition: 0.3s ease;
+}
+
+.tooltip {
+  position: absolute;
+  bottom: 120%; /* muncul di atas link */
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.8);
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 20;
+}
+
+.small a:hover .tooltip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-10px) scale(1.05);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+
+  </style>
+</head>
+
+<body class="position-center">
+  <div class="wrap">
+    <!-- KARTU UTAMA -->
+    <div class="card" id="card">
+
+      <!-- FOTO PROFIL -->
+      <div class="avatar">
+        <!-- Ganti src di bawah dengan link gambar profil kamu -->
+        <img src="p1.png" alt="Profil">
+      </div>
+
+      <!-- TEKS NAMA & PROFESI -->
+      <div style="text-align:center;">
+        <h1 id="site-title">@Swordblaze</h1>
+        <p class="subtitle" id="site-sub">Creator • Review addon Minecraft • Part of Lux Gaming</p>
+      </div>
+
+      <!-- DAFTAR TOMBOL / LINK -->
+      <div class="links">
+        <a class="btn" href="https://whatsapp.com/channel/0029VbC76xt7j6gBOeygUJ1v" target="_blank" rel="noopener">  <img src="wa.png" alt="WA" class="btn-icon" >Saluran WA<span class="tooltip">Bagi bagi addon gratis disini</span></a>
+        <a class="btn" href="https://heppycloud.id/" target="_blank" rel="noopener">  <img src="hc.png" alt="hc" class="btn-icon">Beli Server Hosting - HappyCLoud<span class="tooltip">Beli server hosting terpercaya disini</span></a>
+        <a class="btn" href="https://discord.com/invite/HdSDaP56bc" target="_blank" rel="noopener">  <img src="nv.png" alt="nv" class="btn-icon">Gamers Community<span class="tooltip">Butuh temen mabar? join sini aja</span></a>
+        <a class="btn" href="https://www.tiktok.com/@swordblaze876?_t=8ZQDCDesPC6&_r=1" target="_blank" rel="noopener">  <img src="tt.png" alt="TikTok" class="btn-icon">TikTok<span class="tooltip">Jangan lupa follow ya</span></a>
+        <a class="btn" href="https://www.youtube.com/@swordblaze876" target="_blank" rel="noopener">  <img src="yt.png" alt="YouTube" class="btn-icon">YouTube<span class="tooltip">Subscribe channel aku</span></a>
+        <a class="btn" href="https://discord.gg/VjJUTeBa9Z" target="_blank" rel="noopener"> <img src="discord.png" alt="Discord" class="btn-icon">Discord<span class="tooltip">Gabung ke server Discord</span></a>
+        <a class="btn" href="https://saweria.co/swordblaze" target="_blank" rel="noopener"> <img src="saweria.png" alt="Saweria" class="btn-icon">Support (Saweria)<span class="tooltip">Thanks supportnya</span></a>
+        <div class="next-btn">
+        <a href="journey.html">Next Page →</a>
+      </div>
+      </div>
+
+      <!-- CATATAN TAMBAHAN -->
+      <div class="small" style="position: relative; display: inline-block;">
+  <a href="https://wa.me/6281324061489" target="_blank" style="color:var(--muted); text-decoration:none; position: relative;">
+    Contact Person
+    <span class="tooltip">Business Inquiries (WA) : 081324061489</span>
+  </a>
+</div>
+
+    <!-- CATATAN PENGGUNA -->
+    <!-- 
+      ✅ Cara edit:
+      - Ubah <title> di atas untuk judul halaman browser
+      - Ganti teks @swordblaze di #site-title
+      - Ganti teks di #site-sub sesuai deskripsi kamu
+      - Ubah src gambar di bagian <img> untuk foto profil kamu
+      - Ganti URL di setiap <a class="btn"> agar mengarah ke akun kamu
+    -->
+  </div>
+</body>
+</html>
