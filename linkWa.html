@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Channel - Minecraft Resources</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --wa-green: #25D366;
+            --wa-dark-green: #128C7E;
+            --wa-teal: #075E54;
+            --wa-light: #dcf8c6;
+            --wa-blue: #34B7F1;
+            --wa-white: #ffffff;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--wa-green), var(--wa-dark-green));
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Background dengan pola WhatsApp */
+        .whatsapp-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(37, 211, 102, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 80% 70%, rgba(18, 140, 126, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 40% 80%, rgba(7, 94, 84, 0.1) 0%, transparent 20%);
+            z-index: -1;
+        }
+
+        .floating-icons {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .floating-icons i {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.1);
+            font-size: 1.8rem;
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+            }
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            margin-top: 20px;
+            animation: fadeIn 0.8s ease-out;
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--wa-teal), var(--wa-dark-green));
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .whatsapp-icon {
+            font-size: 5rem;
+            margin-bottom: 20px;
+            color: white;
+            text-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .option-card {
+            flex: 1;
+            min-width: 300px;
+            background-color: #f9f9f9;
+            border-radius: 18px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--wa-green), var(--wa-blue));
+        }
+
+        .option-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+            border-color: var(--wa-green);
+        }
+
+        .option-card h3 {
+            color: var(--wa-teal);
+            margin-bottom: 20px;
+            font-size: 1.6rem;
+        }
+
+        .option-card p {
+            margin-bottom: 25px;
+            color: #555;
+            line-height: 1.6;
+            font-size: 1.05rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px 30px;
+            background: linear-gradient(135deg, var(--wa-green), var(--wa-dark-green));
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(37, 211, 102, 0.6);
+            background: linear-gradient(135deg, var(--wa-dark-green), var(--wa-teal));
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--wa-teal), #05433a);
+            box-shadow: 0 5px 15px rgba(7, 94, 84, 0.4);
+        }
+
+        .btn-secondary:hover {
+            box-shadow: 0 8px 20px rgba(7, 94, 84, 0.6);
+        }
+
+        .link-container {
+            background-color: #f0f0f0;
+            border-radius: 12px;
+            padding: 18px;
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #ddd;
+        }
+
+        .link-text {
+            font-family: monospace;
+            background-color: white;
+            padding: 12px 18px;
+            border-radius: 8px;
+            flex-grow: 1;
+            margin-right: 15px;
+            overflow-x: auto;
+            white-space: nowrap;
+            font-size: 1.05rem;
+            border: 1px solid #ccc;
+        }
+
+        .copy-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, var(--wa-teal), var(--wa-dark-green));
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .copy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+        }
+
+        .info-box {
+            background-color: #e3f2fd;
+            border-left: 5px solid var(--wa-blue);
+            padding: 25px;
+            border-radius: 12px;
+            margin-top: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .info-box::before {
+            content: "\f129";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 3rem;
+            color: rgba(52, 183, 241, 0.2);
+        }
+
+        .info-box h3 {
+            color: #1565C0;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+
+        .info-box p {
+            line-height: 1.7;
+            color: #333;
+            font-size: 1.05rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: white;
+            margin-top: 20px;
+            font-size: 1rem;
+        }
+
+        .success-message {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 15px;
+            display: none;
+            text-align: center;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .step-counter {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .step {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #ccc;
+            transition: all 0.3s;
+        }
+
+        .step.active {
+            background-color: var(--wa-green);
+            transform: scale(1.2);
+        }
+
+        /* Fitur Tambahan */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .feature-item {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+            border: 1px solid #e0e0e0;
+        }
+
+        .feature-item:hover {
+            transform: translateY(-5px);
+            border-color: var(--wa-green);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--wa-green);
+            margin-bottom: 15px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .stat-item {
+            padding: 15px;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--wa-teal);
+            display: block;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 1rem;
+        }
+
+        .testimonial {
+            background: linear-gradient(135deg, var(--wa-light), white);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 30px 0;
+            position: relative;
+            border-left: 5px solid var(--wa-green);
+        }
+
+        .testimonial::before {
+            content: "\f10d";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-size: 2rem;
+            color: var(--wa-green);
+            opacity: 0.3;
+        }
+
+        .testimonial p {
+            font-style: italic;
+            margin-bottom: 15px;
+            padding-left: 40px;
+        }
+
+        .testimonial-author {
+            font-weight: bold;
+            color: var(--wa-teal);
+            text-align: right;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255,255,255,0.3);
+            transform: rotate(30deg);
+        }
+
+        @media (max-width: 768px) {
+            .options {
+                flex-direction: column;
+            }
+            
+            .option-card {
+                min-width: 100%;
+            }
+            
+            .link-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .link-text {
+                margin-right: 0;
+                width: 100%;
+            }
+            
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            .whatsapp-icon {
+                font-size: 4rem;
+            }
+            
+            .stats {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .features {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background dengan tema WhatsApp -->
+    <div class="whatsapp-bg"></div>
+    
+    <!-- Background animasi dengan ikon WhatsApp -->
+    <div class="floating-icons" id="floatingIcons"></div>
+    
+    <div class="container">
+        <button class="theme-toggle" id="themeToggle">
+            <i class="fab fa-whatsapp"></i>
+        </button>
+        
+        <header>
+            <div class="header-content">
+                <i class="fab fa-whatsapp whatsapp-icon"></i>
+                <h1>WhatsApp Channel Minecraft Resources</h1>
+                <p>Dapatkan Addon, Map, Shader & Texture Pack Terbaru untuk Minecraft Bedrock/MCPE</p>
+            </div>
+        </header>
+        
+        <div class="content">
+            <!-- Stats Section -->
+            <div class="stats">
+                <div class="stat-item">
+                    <span class="stat-number" id="resourceCount">400+</span>
+                    <span class="stat-label">Resource Tersedia</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="updateCount">20+</span>
+                    <span class="stat-label">Update/Bulan</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="memberCount">2.5K+</span>
+                    <span class="stat-label">Player Bergabung</span>
+                </div>
+            </div>
+            
+            <div class="options">
+                <div class="option-card">
+                    <h3>Bergabung Langsung</h3>
+                    <p>Klik tombol di bawah untuk langsung bergabung dengan WhatsApp Channel kami. Aplikasi WhatsApp akan terbuka otomatis.</p>
+                    <a href="#" class="btn" id="joinBtn">
+                        <i class="fab fa-whatsapp"></i> Gabung Sekarang
+                    </a>
+                </div>
+                
+                <div class="option-card">
+                    <h3>Salin Link Manual</h3>
+                    <p>Jika tombol gabung tidak berfungsi, salin link di bawah ini dan tempel di aplikasi WhatsApp Anda.</p>
+                    <div class="link-container">
+                        <div class="link-text" id="waLink">https://whatsapp.com/channel/0029VbC76xt7j6gBOeygUJ1v</div>
+                        <button class="copy-btn" id="copyBtn">
+                            <i class="far fa-copy"></i> Salin
+                        </button>
+                    </div>
+                    <div class="success-message" id="copySuccess">
+                        <i class="fas fa-check-circle"></i> Link berhasil disalin!
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Features Section -->
+            <div class="features">
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-download"></i>
+                    </div>
+                    <h3>Download Gratis</h3>
+                    <p>Semua resource tersedia gratis untuk anggota channel</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3>Update Cepat</h3>
+                    <p>Dapatkan resource terbaru langsung di WhatsApp</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Aman & Terpercaya</h3>
+                    <p>Resource berkualitas dan sudah diuji</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Komunitas Aktif</h3>
+                    <p>Diskusi dengan sesama player Minecraft</p>
+                </div>
+            </div>
+            
+            <!-- Testimonial Section -->
+            <div class="testimonial">
+                <p>"Channel ini sangat membantu! Saya selalu dapat addon dan shader terbaru sebelum teman-teman yang lain. Kualitasnya bagus dan mudah diinstall."</p>
+                <div class="testimonial-author">- Ambalabu, Minecraft Player</div>
+            </div>
+            
+            <div class="info-box">
+                <h3>Jika mengalami masalah</h3>
+                <p>Pastikan Anda telah menginstal aplikasi WhatsApp di perangkat Anda. Jika link tidak berfungsi, coba salin link secara manual dan tempel di kolom chat WhatsApp, lalu klik link tersebut. Pastikan juga Anda menggunakan versi terbaru dari aplikasi WhatsApp.</p>
+            </div>
+            
+            <div class="step-counter">
+                <div class="step active"></div>
+                <div class="step"></div>
+                <div class="step"></div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>&copy; 2023 WhatsApp Channel Minecraft Resources. Bergabunglah untuk mendapatkan resource terbaru.</p>
+    </footer>
+
+    <script>
+        // Link WhatsApp Channel
+        const whatsappLink = "https://whatsapp.com/channel/0029VbC76xt7j6gBOeygUJ1v";
+        
+        // Set link di elemen
+        document.getElementById('waLink').textContent = whatsappLink;
+        document.getElementById('joinBtn').href = whatsappLink;
+        
+        // Fungsi untuk menyalin link
+        document.getElementById('copyBtn').addEventListener('click', function() {
+            const linkText = document.getElementById('waLink').textContent;
+            
+            // Menggunakan Clipboard API modern
+            navigator.clipboard.writeText(linkText).then(function() {
+                const successMessage = document.getElementById('copySuccess');
+                successMessage.style.display = 'block';
+                
+                // Sembunyikan pesan sukses setelah 3 detik
+                setTimeout(function() {
+                    successMessage.style.display = 'none';
+                }, 3000);
+                
+                // Animasi step counter
+                const steps = document.querySelectorAll('.step');
+                steps.forEach(step => step.classList.remove('active'));
+                
+                let activeIndex = 0;
+                const interval = setInterval(() => {
+                    steps[activeIndex].classList.add('active');
+                    activeIndex++;
+                    if (activeIndex >= steps.length) {
+                        clearInterval(interval);
+                        setTimeout(() => {
+                            steps.forEach(step => step.classList.remove('active'));
+                            steps[0].classList.add('active');
+                        }, 1000);
+                    }
+                }, 300);
+                
+            }).catch(function(err) {
+                // Fallback untuk browser lama
+                const textArea = document.createElement("textarea");
+                textArea.value = linkText;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand("copy");
+                document.body.removeChild(textArea);
+                
+                const successMessage = document.getElementById('copySuccess');
+                successMessage.style.display = 'block';
+                setTimeout(function() {
+                    successMessage.style.display = 'none';
+                }, 3000);
+            });
+        });
+        
+        // Background animasi dengan ikon WhatsApp
+        const floatingIconsContainer = document.getElementById('floatingIcons');
+        const icons = ['fab fa-whatsapp', 'fas fa-comment', 'fas fa-paper-plane', 'fas fa-mobile-alt'];
+        
+        for (let i = 0; i < 20; i++) {
+            const icon = document.createElement('i');
+            icon.className = icons[Math.floor(Math.random() * icons.length)];
+            icon.style.left = `${Math.random() * 100}%`;
+            icon.style.animationDelay = `${Math.random() * 15}s`;
+            icon.style.fontSize = `${Math.random() * 1.5 + 1}rem`;
+            floatingIconsContainer.appendChild(icon);
+        }
+        
+        // Animated Stats
+        function animateStats() {
+            const resourceCount = document.getElementById('resourceCount');
+            const updateCount = document.getElementById('updateCount');
+            const memberCount = document.getElementById('memberCount');
+            
+            animateValue(resourceCount, 0, 400, 2000);
+            animateValue(updateCount, 0, 20, 2000);
+            animateValue(memberCount, 0, 8100, 2000);
+        }
+        
+        function animateValue(element, start, end, duration) {
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                const value = Math.floor(progress * (end - start) + start);
+                element.textContent = value + '+';
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+        
+        // Jalankan animasi stats setelah halaman dimuat
+        window.addEventListener('load', animateStats);
+        
+        // Theme Toggle (ubah ikon saja)
+        const themeToggle = document.getElementById('themeToggle');
+        themeToggle.addEventListener('click', function() {
+            const icon = this.querySelector('i');
+            const icons = ['fab fa-whatsapp', 'fas fa-comment', 'fas fa-paper-plane', 'fas fa-mobile-alt'];
+            const currentIcon = icon.className;
+            let newIcon;
+            
+            do {
+                newIcon = icons[Math.floor(Math.random() * icons.length)];
+            } while (newIcon === currentIcon);
+            
+            icon.className = newIcon;
+        });
+    </script>
+</body>
+</html>
