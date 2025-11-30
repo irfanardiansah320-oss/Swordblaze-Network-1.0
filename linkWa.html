@@ -694,8 +694,8 @@
             transform: rotate(30deg) scale(1.1);
         }
 
-        /* Progress Bar Animation */
-        .progress-container {
+        /* Progress Bar Animation - DIHAPUS */
+        /* .progress-container {
             width: 100%;
             height: 5px;
             background: rgba(255,255,255,0.2);
@@ -710,7 +710,7 @@
             background: linear-gradient(90deg, var(--wa-green), var(--wa-blue));
             width: 0%;
             transition: width 0.3s ease;
-        }
+        } */
 
         /* Particle Animation */
         .particles {
@@ -1043,26 +1043,9 @@
         html {
             scroll-behavior: smooth;
         }
-
-        /* Scroll Animation */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.6s ease;
-        }
-
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
     </style>
 </head>
 <body>
-    <!-- Progress Bar -->
-    <div class="progress-container">
-        <div class="progress-bar" id="progressBar"></div>
-    </div>
-
     <!-- Floating Elements -->
     <div class="floating-elements">
         <div class="floating-element"></div>
@@ -1098,7 +1081,7 @@
         
         <div class="content">
             <!-- Stats Section - SEKARANG HORIZONTAL DI HP -->
-            <div class="stats fade-in">
+            <div class="stats">
                 <div class="stat-item">
                     <span class="stat-number" id="resourceCount">400+</span>
                     <span class="stat-label">Resource Tersedia</span>
@@ -1115,7 +1098,7 @@
             
             <!-- Options Section -->
             <div class="options">
-                <div class="option-card fade-in">
+                <div class="option-card">
                     <h3>Bergabung Langsung</h3>
                     <p>Klik tombol di bawah untuk langsung bergabung dengan WhatsApp Channel kami. Aplikasi WhatsApp akan terbuka otomatis.</p>
                     <a href="#" class="btn" id="joinBtn">
@@ -1123,7 +1106,7 @@
                     </a>
                 </div>
                 
-                <div class="option-card fade-in">
+                <div class="option-card">
                     <h3>Salin Link Manual</h3>
                     <p>Jika tombol gabung tidak berfungsi, salin link di bawah ini dan tempel di aplikasi WhatsApp Anda.</p>
                     <div class="link-container">
@@ -1140,28 +1123,28 @@
             
             <!-- Features Section -->
             <div class="features">
-                <div class="feature-item fade-in">
+                <div class="feature-item">
                     <div class="feature-icon">
                         <i class="fas fa-download"></i>
                     </div>
                     <h3>Download Gratis</h3>
                     <p>Semua resource tersedia gratis untuk anggota channel</p>
                 </div>
-                <div class="feature-item fade-in">
+                <div class="feature-item">
                     <div class="feature-icon">
                         <i class="fas fa-bolt"></i>
                     </div>
                     <h3>Update Cepat</h3>
                     <p>Dapatkan resource terbaru langsung di WhatsApp</p>
                 </div>
-                <div class="feature-item fade-in">
+                <div class="feature-item">
                     <div class="feature-icon">
                         <i class="fas fa-shield-alt"></i>
                     </div>
                     <h3>Aman & Terpercaya</h3>
                     <p>Resource berkualitas dan sudah diuji</p>
                 </div>
-                <div class="feature-item fade-in">
+                <div class="feature-item">
                     <div class="feature-icon">
                         <i class="fas fa-users"></i>
                     </div>
@@ -1171,12 +1154,12 @@
             </div>
             
             <!-- Testimonial Section -->
-            <div class="testimonial fade-in">
+            <div class="testimonial">
                 <p>"Channel ini sangat membantu! Saya selalu dapat addon dan shader terbaru sebelum teman-teman yang lain. Kualitasnya bagus dan mudah diinstall."</p>
                 <div class="testimonial-author">- Ambalabu, Minecraft Player</div>
             </div>
             
-            <div class="info-box fade-in">
+            <div class="info-box">
                 <h3>Jika mengalami masalah</h3>
                 <p>Pastikan Anda telah menginstal aplikasi WhatsApp di perangkat Anda. Jika link tidak berfungsi, coba salin link secara manual dan tempel di kolom chat WhatsApp, lalu klik link tersebut. Pastikan juga Anda menggunakan versi terbaru dari aplikasi WhatsApp.</p>
             </div>
@@ -1184,7 +1167,7 @@
     </div>
     
     <footer>
-        <p>&copy; 2025 WhatsApp Channel Minecraft Resources. Bergabunglah untuk mendapatkan resource terbaru.</p>
+        <p>&copy; 2023 WhatsApp Channel Minecraft Resources. Bergabunglah untuk mendapatkan resource terbaru.</p>
     </footer>
 
     <script>
@@ -1238,15 +1221,6 @@
             icon.className = newIcon;
         });
 
-        // Progress Bar
-        window.addEventListener('scroll', function() {
-            const winHeight = window.innerHeight;
-            const docHeight = document.documentElement.scrollHeight;
-            const scrollTop = window.pageYOffset;
-            const scrollPercent = (scrollTop / (docHeight - winHeight)) * 100;
-            document.getElementById('progressBar').style.width = scrollPercent + '%';
-        });
-
         // Particle Animation
         function createParticles() {
             const particlesContainer = document.getElementById('particles');
@@ -1272,30 +1246,11 @@
             }
         }
 
-        // Scroll Animation
-        function checkScroll() {
-            const fadeElements = document.querySelectorAll('.fade-in');
-            
-            fadeElements.forEach(element => {
-                const elementTop = element.getBoundingClientRect().top;
-                const elementVisible = 150;
-                
-                if (elementTop < window.innerHeight - elementVisible) {
-                    element.classList.add('visible');
-                }
-            });
-        }
-
         // Number Counting Animation
         function animateNumbers() {
             const resourceCount = document.getElementById('resourceCount');
             const updateCount = document.getElementById('updateCount');
             const memberCount = document.getElementById('memberCount');
-            
-            // Reset values
-            resourceCount.textContent = '0+';
-            updateCount.textContent = '0+';
-            memberCount.textContent = '0+';
             
             // Animate numbers
             animateValue(resourceCount, 0, 400, 2000);
@@ -1320,25 +1275,8 @@
         // Initialize animations when page loads
         window.addEventListener('load', function() {
             createParticles();
-            checkScroll();
-            
-            // Animate numbers when stats section is in view
-            const statsSection = document.querySelector('.stats');
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        animateNumbers();
-                        observer.unobserve(entry.target);
-                    }
-                });
-            });
-            
-            observer.observe(statsSection);
+            animateNumbers(); // Langsung jalankan animasi angka tanpa perlu scroll
         });
-
-        // Check scroll on scroll
-        window.addEventListener('scroll', checkScroll);
     </script>
 </body>
 </html>
-
