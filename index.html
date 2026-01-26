@@ -617,6 +617,154 @@ text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
   box-shadow: 0 4px 12px rgba(0,0,0,0.4);
 }
 
+/* ------------------------------
+   RESPONSIVE FIX UNTUK HP
+   (Tambahkan di bagian responsive CSS)
+------------------------------ */
+@media (max-width: 480px) {
+  .btn {
+    padding: 10px 12px; /* Kurangi padding */
+    font-size: 14px; /* Perkecil font sedikit */
+  }
+  
+  .btn-icon {
+    width: 18px; /* Perkecil logo */
+    height: 18px;
+    margin-right: 6px; /* Kurangi jarak */
+  }
+  
+  /* Pastikan teks tidak terlalu panjang */
+  .btn span:not(.tooltip) {
+    white-space: normal; /* Izinkan teks turun baris */
+    line-height: 1.3;
+    text-align: left;
+    flex: 1;
+  }
+  
+  /* Atur tata letak tombol untuk teks panjang */
+  .btn {
+    align-items: flex-start; /* Rata kiri vertikal */
+    text-align: left;
+  }
+  
+  /* Untuk tombol dengan teks sangat panjang */
+  .btn:nth-child(2) { /* Tombol "Beli Minecraft Java & Bedrock Termurah" */
+    font-size: 13px;
+    padding: 10px 10px;
+  }
+  
+  /* Perkecil card lebih lanjut untuk HP sangat kecil */
+  :root {
+    --maxw: 95vw; /* Gunakan viewport width */
+  }
+  
+  .card {
+    padding: 20px 15px;
+  }
+}
+
+/* Untuk layar sangat kecil (di bawah 360px) */
+@media (max-width: 360px) {
+  .btn {
+    font-size: 12px;
+    padding: 8px 10px;
+  }
+  
+  .btn-icon {
+    width: 16px;
+    height: 16px;
+    margin-right: 4px;
+  }
+  
+  .btn:nth-child(2) {
+    font-size: 11px;
+  }
+  
+  /* Atur flex direction jika perlu */
+  .btn {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+/* Fix untuk mencegah teks keluar dari tombol */
+.btn {
+  word-break: break-word; /* Pecah kata jika perlu */
+  overflow-wrap: break-word;
+  max-width: 100%;
+}
+
+/* Pastikan tooltip tidak mengganggu di HP */
+@media (max-width: 768px) {
+  .tooltip {
+    display: none; /* Sembunyikan tooltip di HP */
+  }
+}
+
+.btn {
+  position: relative;
+  border: 1px solid transparent;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  padding: 1px;
+  background: linear-gradient(45deg, #ffffff, #ffb1b1, #ffffff);
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+.btn:hover::before {
+  opacity: 1;
+  animation: borderGlow 2s linear infinite;
+}
+
+@keyframes borderGlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.cursor {
+  display: inline-block;
+  width: 3px;
+  animation: blink 1s infinite;
+  margin-left: 2px;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.card {
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.card:hover {
+  transform: 
+    rotateY(5deg) 
+    rotateX(2deg) 
+    translateZ(20px);
+  box-shadow: 
+    0 20px 40px rgba(0,0,0,0.6),
+    0 0 50px rgba(99,102,241,0.4);
+}
+
+
+
   </style>
 </head>
 
@@ -633,7 +781,10 @@ text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
 
       <!-- TEKS NAMA & PROFESI -->
       <div style="text-align:center;">
-        <h1 id="site-title">@Swordblaze</h1>
+        <h1 id="site-title">@Swordblaze
+          <span class="typed-text"></span>
+          <span class="cursor">&nbsp;</span>
+        </h1>
         <p class="subtitle" id="site-sub">Creator • Review addon Minecraft • Part of bangblazestore</p>
       </div>
 
@@ -669,5 +820,49 @@ text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
       - Ganti URL di setiap <a class="btn"> agar mengarah ke akun kamu
     -->
   </div>
+    <script>
+const typedTextSpan = document.querySelector(".typed-text");
+const cursorSpan = document.querySelector(".cursor");
+
+const textArray = ["Part Of BangBlaze Store", "Creator", "Review Addon", "Minecraft Pro"];
+const typingDelay = 100;
+const erasingDelay = 50;
+const newTextDelay = 1500;
+let textArrayIndex = 0;
+let charIndex = 0;
+
+function type() {
+  if (charIndex < textArray[textArrayIndex].length) {
+    typedTextSpan.textContent += textArray[textArrayIndex].charAt(charIndex);
+    charIndex++;
+    setTimeout(type, typingDelay);
+  } else {
+    setTimeout(erase, newTextDelay);
+  }
+}
+
+function erase() {
+  if (charIndex > 0) {
+    typedTextSpan.textContent = textArray[textArrayIndex].substring(0, charIndex-1);
+    charIndex--;
+    setTimeout(erase, erasingDelay);
+  } else {
+    textArrayIndex++;
+    if(textArrayIndex>=textArray.length) textArrayIndex=0;
+    setTimeout(type, typingDelay + 500);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+  setTimeout(type, newTextDelay);
+});
+
+
+
+
+
+
+</script>
+
 </body>
 </html>
